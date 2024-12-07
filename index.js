@@ -13,7 +13,7 @@ class AutofillWithResume {
     try {
       const dataBuffer = fs.readFileSync(this.filePath);
       const pdfData = await pdfParse(dataBuffer);
-      const extractedText = pdfData.text.trim();
+      const extractedText = pdfData.text.trim().replace(/"/g, '\\"');
 
       const prompt = `
       Extract the following details from the provided paragraph: name, website, email, phone number, LinkedIn, GitHub, Twitter (X), Facebook, education, skills, experience, projects, certifications, and achievements.
@@ -62,19 +62,22 @@ class AutofillWithResume {
             "title": "Job title extracted from the paragraph",
             "company": "Company name extracted from the paragraph",
             "duration": "Duration extracted from the paragraph",
-            "description": "Job description extracted from the paragraph"
+            "description": "Job description extracted from the paragraph",
+            "location": "Company Location extracted from the paragraph"
           },
           {
             "title": "Job title extracted from the paragraph",
             "company": "Company name extracted from the paragraph",
             "duration": "Duration extracted from the paragraph",
-            "description": "Job description extracted from the paragraph"
+            "description": "Job description extracted from the paragraph",
+            "location": "Company Location extracted from the paragraph"
           },
           {
             "title": "Job title extracted from the paragraph",
             "company": "Company name extracted from the paragraph",
             "duration": "Duration extracted from the paragraph",
-            "description": "Job description extracted from the paragraph"
+            "description": "Job description extracted from the paragraph",
+            "location": "Company Location extracted from the paragraph"
           },
           "..."
         ],
@@ -149,9 +152,9 @@ class AutofillWithResume {
       .replace(/```json/g, "") 
       .replace(/```/g, "")   
       .replace(/\\n/g, "")     
-      .replace(/\\/g, "")     
+      // .replace(/\\/g, "")     
       .replace(/^JSON/, "")    
-      .trim();    
+      .trim(); 
 
       if (!cleanText.endsWith("}")) {
         throw new Error("Incomplete JSON response.");
